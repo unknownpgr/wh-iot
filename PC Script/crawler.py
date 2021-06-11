@@ -2,6 +2,7 @@ import time
 import socket
 import csv
 import datetime
+import win32api
 
 # Constants
 HOST = 'arduino.local'
@@ -24,7 +25,10 @@ with open('output.csv', 'w', newline='') as f:
                 data_arduino = str(s.recv(1024), encoding='utf-8')
                 # Split the data into sensor 1 and sensor2
                 value1, value2 = data_arduino.split('/')
+                if value1 == '1' or value2 == '0':
+                    win32api.MessageBox(0x10, 'Water head too high!', 'Alert!')
                 print('Arduino Data :', data_arduino)
+
         except:
             # If connection is not established, print error message and try again after 2 seconds.
             print('Could not connect to Arduino. Try again after 2 seconds.')
